@@ -1,0 +1,118 @@
+# === ORGANIZATION ===
+
+# Set XDG environment variables
+export HISTFILE="$XDG_STATE_HOME/zsh/history"
+export MYVIMRC="$XDG_CONFIG_HOME/nvim/init.lua"
+####export CARGO_HOME="$XDG_DATA_HOME/cargo"
+####export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
+####export OPAMROOT="$XDG_DATA_HOME/opam"
+####export TEXMFVAR="$XDG_CACHE_HOME/texmf"
+####export TEXMFCONFIG="$XDG_CONFIG_HOME/texmf"
+
+# cargo configuration
+####. "$CARGO_HOME/env"
+# opam configuration
+####[[ ! -r /home/debbie/.local/share/opam/opam-init/init.zsh ]] || source /home/debbie/.local/share/opam/opam-init/init.zsh  > /dev/null 2> /dev/null
+# texlive
+
+# === TERMINAL-SPECIFIC ===
+
+# Set the terminal to be used.
+# NOTE: This variable is used to determine terminal-specific settings over ssh.
+#       This was originally used because I had to swap between shelly and termius,
+#       but I'm leaving it here until my setup becomes more consistent.
+SSH_CLIENT_TERMINAL=termius
+function nvim() {
+    env theme=$SSH_CLIENT_TERMINAL bash -c "nvim ${@:1}"
+}
+
+# === OPTIONS ===
+
+# Set history size
+HISTSIZE=1000
+SAVEHIST=1000
+# Remove duplicates from shell history
+setopt HIST_IGNORE_ALL_DUPS
+# Enable changing directory without using `cd` explicitly
+setopt autocd 
+# Enable advanced pattern matching
+setopt extendedglob
+# Enable advanced autocompletion
+autoload -Uz compinit
+compinit -d "$XDG_CACHE_HOME"/zsh/zcompdump-"$ZSH_VERSION"
+# Set fzf default options
+####export FZF_DEFAULT_OPTS="
+####   --ansi 
+####   --preview-window 'right:60%,border-left' 
+####   --preview 'bat --color=always --style=header,grid --line-range :300 {}'
+####   --border
+####   --reverse
+####   --bind ctrl-k:preview-up,ctrl-j:preview-down
+####"
+
+# Enable fzf keybindings
+####source /usr/share/doc/fzf/examples/key-bindings.zsh
+# Enable fzf autocompletion
+####source /usr/share/doc/fzf/examples/completion.zsh
+
+# === COLORS ===
+
+# Enable colors in shell
+autoload -U colors && colors
+# Make directory listings match prompt directory colour
+LS_COLORS=$LS_COLORS:"di=1;33:" ; export LS_COLORS
+# colorize autocompletion
+# TODO: not sure of the difference between these two lines
+zstyle ':completion:*' list-colors ''
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+
+
+# === PROMPT ===
+
+# Enable vi-mode
+bindkey -v
+# Create a script that displays the prompt
+function zle-line-init zle-keymap-select {
+    # The indicator to use in vi normal mode
+    local vi_normal_prompt="%{$fg[magenta]%}*"
+    # The indicator to use in vi insert mode
+    local vi_insert_prompt="%{$reset_color%}+"
+    # Configure the symbols that display the current vi mode
+    local vi_mode_indicator=${${KEYMAP/vicmd/$vi_normal_prompt}/(main|viins)/$vi_insert_prompt}
+    # The base string to use in the prompt.
+    # NOTE: in this case, it is set to `user@machine`
+    local prompt_base="%{$fg[green]%}%n@%m"
+    # The base string to use in continuation prompt
+    local prompt_2_base="%{$fg[green]%}>"
+    # The directory indicator to use in the prompt.
+    local prompt_dir="%{$fg[yellow]%}%~"
+    # The full prompt string.
+    local prompt_full="${prompt_base} ${prompt_dir} ${vi_mode_indicator}" 
+    
+    # Set the shell prompt
+    PS1="${prompt_full}%{$reset_color%} "
+    PS2="${prompt_2_base} ${vi_mode_indicator}%{$reset_color%} "
+    # Redraw the prompt
+    zle reset-prompt
+}
+# Update zsh to use custom prompt config
+zle -N zle-line-init
+zle -N zle-keymap-select
+# Remove delay when entering vi normal mode
+# NOTE: this may have other unintended side-effects.
+KEYTIMEOUT=1
+# Use vim's backspace functionality instead of vi's.
+# NOTE: Normally, backspace ('^?') is set to `vi-backward-delete-char` which
+#       does not allow deletion of older text when inserting/appending.
+bindkey -v '^?' backward-delete-char
+# Disable tab-insert when prompt is empty
+zstyle ':completion:*' insert-tab false
+# Invoke autocomplete in current directory only
+####zstyle ':completion::complete:-command-::' tag-order local-directories -
+
+
+# === ALIASES ===
+
+# Use colors in ls
+alias ls='ls --color=auto'
+
