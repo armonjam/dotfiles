@@ -15,16 +15,6 @@ export MYVIMRC="$XDG_CONFIG_HOME/nvim/init.lua"
 ####[[ ! -r /home/debbie/.local/share/opam/opam-init/init.zsh ]] || source /home/debbie/.local/share/opam/opam-init/init.zsh  > /dev/null 2> /dev/null
 # texlive
 
-# === TERMINAL-SPECIFIC ===
-
-# Set the terminal to be used.
-# NOTE: This variable is used to determine terminal-specific settings over ssh.
-#       This was originally used because I had to swap between shelly and termius,
-#       but I'm leaving it here until my setup becomes more consistent.
-SSH_CLIENT_TERMINAL=termius
-function nvim() {
-    env theme=$SSH_CLIENT_TERMINAL bash -c "nvim ${@:1}"
-}
 
 # === OPTIONS ===
 
@@ -62,8 +52,6 @@ autoload -U colors && colors
 # Make directory listings match prompt directory colour
 LS_COLORS=$LS_COLORS:"di=1;33:" ; export LS_COLORS
 # colorize autocompletion
-# TODO: not sure of the difference between these two lines
-zstyle ':completion:*' list-colors ''
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 
 
