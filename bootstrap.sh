@@ -27,13 +27,12 @@ systemctl enable --now systemd-resolved.service
 # Download and install packages
 pacman --sync --refresh --quiet --noconfirm --needed sudo zsh neovim git openssh chezmoi bat
 
-
-
 # Configure sshd
 printf '%s' '
 Port 22
 PermitRootLogin no
 PasswordAuthentication no
+PrintLastLog no
 ' > /etc/ssh/sshd_config.d/bootstrap-ssh.conf
 
 # Enable sshd if requested
