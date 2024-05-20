@@ -24,7 +24,9 @@ systemctl enable --now systemd-networkd.service
 systemctl enable --now systemd-resolved.service
 
 # Download and install packages
-pacman --sync --refresh --quiet --noconfirm --needed sudo zsh neovim git openssh chezmoi 
+pacman --sync --refresh --quiet --noconfirm --needed sudo zsh neovim git openssh chezmoi
+
+# TODO: configure ssh daemon not to allow password ssh (only keys)
 
 # Initialize custom sudoers file
 echo "
