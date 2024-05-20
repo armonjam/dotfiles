@@ -2,6 +2,7 @@
 USER="archie"
 ADMIN_GROUP="wheel"
 EMPTYDIR="/tmp/bootstrap/emptydir"
+ENABLE_SSH_SERVER="true"
 
 # Create temporary empty directory for use in script
 mkdir -p ${EMPTYDIR}
@@ -24,12 +25,24 @@ systemctl enable --now systemd-networkd.service
 systemctl enable --now systemd-resolved.service
 
 # Download and install packages
-pacman --sync --refresh --quiet --noconfirm --needed sudo zsh neovim git openssh chezmoi
+pacman --sync --refresh --quiet --noconfirm --needed sudo zsh neovim git openssh chezmoi bat
 
-# TODO: configure ssh daemon not to allow password ssh (only keys)
+
+
+# Configure sshd
+printf '%s' '
+Port 22
+PermitRootLogin no
+PasswordAuthentication no
+' > /etc/ssh/sshd_config.d/bootstrap-ssh.conf
+
+# Enable sshd if requested
+if [ "$ENABLE_SSH_SERVER" = true ]; then
+	systemctl enable --now sshd.service
+fi
 
 # Initialize custom sudoers file
-echo "
+printf '%s' "
 # Use root user's password whenever using sudo
 Defaults rootpw
 # Add the admin group to the sudoers list
@@ -52,3 +65,11 @@ ExecStart=-/usr/bin/agetty --skip-login --nonewline --noissue --autologin archie
 
 # Cleanup
 rm -rd ${EMPTYDIR}
+
+# Optional tailscale package
+pacman --sync --refresh --quiet --noconfirm --needed tailscale
+# Enable tailscale service
+sudo systemctl enable --now tailscaled.service
+# Configure tailscale using local network
+tailscale up
+
