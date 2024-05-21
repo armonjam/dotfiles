@@ -6,8 +6,7 @@ USER="archie"
 
 mkdir -p ${TEMPDIR}
 
-pacman --sync --refresh --quiet --noconfirm --needed wget tailscale which nvidia
-pacman --sync --refresh --quiet --noconfirm --needed xorg-server
+pacman --sync --refresh --quiet --noconfirm --needed wget tailscale which nvidia lib32-nvidia-utils nvidia-utils xorg-server
 # Enable tailscale service
 sudo systemctl enable --now tailscaled.service
 # Configure tailscale using local network
