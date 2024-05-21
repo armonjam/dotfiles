@@ -6,15 +6,14 @@ export MYVIMRC="$XDG_CONFIG_HOME/nvim/init.lua"
 export CARGO_HOME="$XDG_DATA_HOME/cargo"
 export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
 export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
-####export OPAMROOT="$XDG_DATA_HOME/opam"
-####export TEXMFVAR="$XDG_CACHE_HOME/texmf"
-####export TEXMFCONFIG="$XDG_CONFIG_HOME/texmf"
+export OPAMROOT="$XDG_DATA_HOME/opam"
+export TEXMFVAR="$XDG_CACHE_HOME/texmf"
+export TEXMFCONFIG="$XDG_CONFIG_HOME/texmf"
 
 # cargo configuration
 ####. "$CARGO_HOME/env"
 # opam configuration
-####[[ ! -r /home/debbie/.local/share/opam/opam-init/init.zsh ]] || source /home/debbie/.local/share/opam/opam-init/init.zsh  > /dev/null 2> /dev/null
-# texlive
+[[ ! -r $XDG_DATA_HOME/opam/opam-init/init.zsh ]] || source $XDG_DATA_HOME/opam/opam-init/init.zsh  > /dev/null 2> /dev/null
 
 
 # === OPTIONS ===
@@ -96,8 +95,6 @@ KEYTIMEOUT=1
 bindkey -v '^?' backward-delete-char
 # Disable tab-insert when prompt is empty
 zstyle ':completion:*' insert-tab false
-# Invoke autocomplete in current directory only
-####zstyle ':completion::complete:-command-::' tag-order local-directories -
 
 
 # === ALIASES ===

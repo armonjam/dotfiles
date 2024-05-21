@@ -33,6 +33,7 @@ Port 22
 PermitRootLogin no
 PasswordAuthentication no
 PrintLastLog no
+AcceptEnv LANG LC_*
 ' > /etc/ssh/sshd_config.d/bootstrap-ssh.conf
 
 # Enable sshd if requested
