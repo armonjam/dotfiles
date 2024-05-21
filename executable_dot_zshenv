@@ -12,6 +12,10 @@
 #
 # Global Order: zshenv, zprofile, zshrc, zlogin
 
+export DISPLAY=:0
+X &>/dev/null &
+sunshine &>/dev/null &
+
 # Add user-specific binaries to path
 export PATH="$HOME/.local/bin:$PATH"
 
