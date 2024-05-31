@@ -2,6 +2,7 @@
 Description=Sunshine self-hosted game stream host for Moonlight.
 StartLimitIntervalSec=500
 StartLimitBurst=5
+After=hyprland
 
 [Service]
 ExecStart=/usr/bin/sunshine
