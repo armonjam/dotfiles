@@ -9,9 +9,10 @@ export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
 export OPAMROOT="$XDG_DATA_HOME/opam"
 export TEXMFVAR="$XDG_CACHE_HOME/texmf"
 export TEXMFCONFIG="$XDG_CONFIG_HOME/texmf"
+export AWS_SHARED_CREDENTIALS_FILE="$XDG_CONFIG_HOME/aws/credentials"
+export AWS_CONFIG_FILE="$XDG_CONFIG_HOME/aws/config"
+export CUDA_CACHE_PATH="$XDG_CACHE_HOME/nv"
 
-# cargo configuration
-####. "$CARGO_HOME/env"
 # opam configuration
 [[ ! -r $XDG_DATA_HOME/opam/opam-init/init.zsh ]] || source $XDG_DATA_HOME/opam/opam-init/init.zsh  > /dev/null 2> /dev/null
 
