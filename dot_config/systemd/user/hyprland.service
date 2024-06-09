@@ -1,0 +1,10 @@
+[Unit]
+Description=Hyprland wayland compositor
+StartLimitIntervalSec=500
+StartLimitBurst=5
+
+[Service]
+ExecStart=/usr/bin/Hyprland
+
+[Install]
+WantedBy=default.target
